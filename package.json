@@ -1,0 +1,25 @@
+{
+  "name": "proyecto-2-hcg",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablo-6728/Proyecto-2-HCG.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pablo-6728/Proyecto-2-HCG/issues"
+  },
+  "homepage": "https://github.com/pablo-6728/Proyecto-2-HCG#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "three": "^0.144.0"
+  },
+  "main": "index.js",
+  "devDependencies": {},
+  "description": ""
+}
