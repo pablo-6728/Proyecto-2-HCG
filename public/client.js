@@ -57,8 +57,6 @@ controls.enableDamping = true
 const stats = Stats()
 document.body.appendChild(stats.dom)
 
-//A partir de aca cargamos los assets de la escena
-
 // Portal de obsidiana de Minecraft.
 const minecraftPortal = newPortal()
 scene.add(minecraftPortal)
@@ -163,12 +161,48 @@ function newPortal(x = 0, y = 0, z = 0) {
 }
 
 //añadir assets
-const loader01 = new GLTFLoader()
-loader01.load(
+const villagerr01 = new GLTFLoader()
+villagerr01.load(
     'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = 70
+        gltfScene.scene.rotation.y = 180
         gltfScene.scene.scale.set(10, 10, 10)
         gltfScene.scene.position.set(50, 0, 0)
+        scene.add(gltfScene.scene)
+    },
+    function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+        console.log(error);
+        console.log( 'An error happened' );
+
+    }
+)
+
+const villagerr02 = new GLTFLoader()
+villagerr02.load(
+    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
+        gltfScene.scene.rotation.y = 100
+        gltfScene.scene.scale.set(10, 10, 10)
+        gltfScene.scene.position.set(50, 0, 20)
+        scene.add(gltfScene.scene)
+    },
+    function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+        console.log(error);
+        console.log( 'An error happened' );
+
+    }
+)
+
+const villagerr03 = new GLTFLoader()
+villagerr03.load(
+    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
+        gltfScene.scene.rotation.y = -180
+        gltfScene.scene.scale.set(10, 10, 10)
+        gltfScene.scene.position.set(70, 0, 0)
         scene.add(gltfScene.scene)
     },
     function ( xhr ) {
