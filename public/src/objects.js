@@ -190,7 +190,7 @@ class Torch {
         // Load a glTF resource
         loader.load(
             // resource URL
-            'assets/models/torch.gltf',
+            'assets/models/minecraft-torch/scene.gltf',
             // called when the resource is loaded
             function ( gltf ) {
                 gltf.scene.position.set(0, 8.125, 0)
