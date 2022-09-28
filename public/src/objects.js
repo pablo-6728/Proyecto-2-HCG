@@ -187,11 +187,6 @@ class Torch {
         // Instantiate a loader
         const loader = new GLTFLoader();
 
-        // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-        const dracoLoader = new DRACOLoader();
-        dracoLoader.setDecoderPath( '/examples/js/libs/draco/' );
-        loader.setDRACOLoader( dracoLoader );
-
         // Load a glTF resource
         loader.load(
             // resource URL
