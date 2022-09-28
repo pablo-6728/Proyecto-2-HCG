@@ -2,8 +2,8 @@ import * as THREE from 'three'
 import {OrbitControls} from './jsm/controls/OrbitControls.js'
 import Stats from './jsm/libs/stats.module.js'
 import { OBJLoader } from './jsm/loaders/OBJLoader.js'
-import { MTLLoader } from './jsm/loaders/MTLLoader.js'
-import { Material } from 'three'
+import { GLTFLoader } from './jsm/loaders/GLTFLoader.js'
+
 
 //añadir plano
 const scene = new THREE.Scene()
@@ -162,28 +162,25 @@ function newPortal(x = 0, y = 0, z = 0) {
     return MCPortal
 }
 
-//añadir mobs
-const creepLoader = new MTLLoader()
-creepLoader.load(
-    'assets/models/Bee.mtl', (material) => {
-        material.preload()
-        console.log(material)
-        const objLoader = new OBJLoader()
-        objLoader.setMaterials(material)
-        objLoader.load(
-            'assets/models/Bee.obj', (object) => {
-                object.position.x = 15
-                scene.add(object)
-            },
-            (xhr) => {
-                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-            },
-            (error) => {
-                console.log(error)
-            }
-        )
+//añadir assets
+const loader01 = new GLTFLoader()
+loader01.load(
+    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
+        gltfScene.scene.rotation.y = 70
+        gltfScene.scene.scale.set(10, 10, 10)
+        gltfScene.scene.position.set(50, 0, 0)
+        scene.add(gltfScene.scene)
+    },
+    function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+        console.log(error);
+        console.log( 'An error happened' );
+
     }
 )
+
 function render(){
     renderer.render(scene, camera)
 }
