@@ -75,7 +75,7 @@ villagerr01.load(
     'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
         gltfScene.scene.rotation.y = 180
         gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(50, 0, 0)
+        gltfScene.scene.position.set(50, 5, 0)
         scene.add(gltfScene.scene)
     },
     function ( xhr ) {
@@ -93,7 +93,7 @@ villagerr02.load(
     'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
         gltfScene.scene.rotation.y = 100
         gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(50, 0, 20)
+        gltfScene.scene.position.set(50, 5, 20)
         scene.add(gltfScene.scene)
     },
     function ( xhr ) {
@@ -111,7 +111,7 @@ villagerr03.load(
     'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
         gltfScene.scene.rotation.y = -180
         gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(70, 0, 0)
+        gltfScene.scene.position.set(70, 5, 0)
         scene.add(gltfScene.scene)
     },
     function ( xhr ) {
@@ -129,7 +129,7 @@ cat01.load(
     'assets/models/minecraft-cat/source/minecraft-cat.gltf', (gltfScene) => {
         gltfScene.scene.rotation.y = 100
         gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(-50, 0, 20)
+        gltfScene.scene.position.set(-50, 5, 20)
         scene.add(gltfScene.scene)
     },
     function ( xhr ) {
