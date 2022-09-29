@@ -100,30 +100,12 @@ villagerr02.load(
     }
 )
 
-const cat01 = new GLTFLoader()
-cat01.load(
-    'assets/models/minecraft-cat/source/minecraft-cat.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = 100
-        gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(-50, 5, 20)
-        scene.add(gltfScene.scene)
-    },
-    function ( xhr ) {
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-        console.log(error);
-        console.log( 'An error happened' );
-
-    }
-)
-
 const villagerr03 = new GLTFLoader()
 villagerr03.load(
     'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
         gltfScene.scene.rotation.y = -180
         gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(70, 5, 0)
+        gltfScene.scene.position.set(70, 0, 0)
         scene.add(gltfScene.scene)
     },
     function ( xhr ) {
@@ -136,12 +118,23 @@ villagerr03.load(
     }
 )
 
-const villager04 = new obj.Villager(0, 0, 30)
-villager04.Mesh.rotation.y = Math.PI
-scene.add(villager04.Mesh)
+const cat01 = new GLTFLoader()
+cat01.load(
+    'assets/models/minecraft-cat/source/minecraft-cat.gltf', (gltfScene) => {
+        gltfScene.scene.rotation.y = 100
+        gltfScene.scene.scale.set(10, 10, 10)
+        gltfScene.scene.position.set(-50, 0, 20)
+        scene.add(gltfScene.scene)
+    },
+    function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+        console.log(error);
+        console.log( 'An error happened' );
 
-const sword = new obj.DiamondSword()
-scene.add(sword.Mesh)
+    }
+)
 
 function render(){
     renderer.render(scene, camera)
