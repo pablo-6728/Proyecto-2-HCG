@@ -197,6 +197,24 @@ villagerr02.load(
     }
 )
 
+const villagerr03 = new GLTFLoader()
+villagerr03.load(
+    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
+        gltfScene.scene.rotation.y = -180
+        gltfScene.scene.scale.set(10, 10, 10)
+        gltfScene.scene.position.set(70, 0, 0)
+        scene.add(gltfScene.scene)
+    },
+    function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+        console.log(error);
+        console.log( 'An error happened' );
+
+    }
+)
+
 const cat01 = new GLTFLoader()
 cat01.load(
     'assets/models/minecraft-cat/source/minecraft-cat.gltf', (gltfScene) => {
@@ -215,23 +233,7 @@ cat01.load(
     }
 )
 
-const villagerr03 = new GLTFLoader()
-villagerr03.load(
-    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = -180
-        gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(70, 0, 0)
-        scene.add(gltfScene.scene)
-    },
-    function ( xhr ) {
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-        console.log(error);
-        console.log( 'An error happened' );
 
-    }
-)
 
 function render(){
     renderer.render(scene, camera)
