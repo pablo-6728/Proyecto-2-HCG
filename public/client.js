@@ -14,12 +14,6 @@ const ambientLight = new THREE.AmbientLight()
 ambientLight.intensity = 0.5
 scene.add(ambientLight)
 
-const light = new THREE.PointLight()
-light.intensity = 1
-light.position.set(0, 100, 50)
-light.castShadow = true
-//scene.add(light)
-
 const camera = new THREE.PerspectiveCamera(
     100,
     window.innerWidth / window.innerHeight,
@@ -47,7 +41,7 @@ const torch = new obj.Torch(30, 0, 30)
 scene.add(torch.Mesh)
 
 // Portal de obsidiana de Minecraft.
-const minecraftPortal = new obj.Portal(0, 5, 0)
+const minecraftPortal = new obj.Portal(70, 5, -95)
 const portalTex = minecraftPortal.portalTex
 scene.add(minecraftPortal.Mesh)
 
@@ -141,8 +135,6 @@ cat01.load(
 
     }
 )
-
-
 
 function render(){
     renderer.render(scene, camera)
