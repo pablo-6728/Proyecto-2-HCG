@@ -175,13 +175,13 @@ class Portal {
 
 class Model {
     #mesh = new THREE.Group()
+    #model = new THREE.Group()
 
     constructor(gltfPath = "") {
         const loader = new GLTFLoader()
         loader.load(
             `assets/models/${gltfPath}`, (gltfScene) => {
-                gltfScene.scene.name = gltfPath
-                this.#mesh.add(gltfScene.scene)
+                this.#model.add(gltfScene.scene)
             },
             function ( xhr ) {
                 console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -192,6 +192,9 @@ class Model {
 
             }
         )
+    }
+    get _Model() {
+        return this.#model
     }
 
     get Mesh() {
@@ -248,14 +251,11 @@ class Torch {
 
 class Villager extends Model {
     constructor(x = 0, y = 0, z = 0) {
-        const objName = "minecraft-villager/source/model.gltf"
-        super(objName)
+        super("minecraft-villager/source/model.gltf")
 
-
-        console.log(this.Mesh)
-        const obj = this.Mesh.children[0]
-        obj.scale.set(10, 10, 10)
-        obj.position.y = 5
+        this._Model.scale.set(10, 10, 10)
+        this._Model.position.y = 5
+        this.Mesh.add(this._Model)
 
         // Puede recibir sombras con esto, pero se ve feo.
         /* gltfScene.scene.traverse(function(node) {
@@ -271,12 +271,11 @@ class Villager extends Model {
 
 class DiamondSword extends Model{
     constructor(x = 0, y = 0, z = 0) {
-        const objName = "minecraft_diamond-sword/scene.gltf"
-        super(objName)
+        super("minecraft_diamond-sword/scene.gltf")
 
-        const obj = this.Mesh.getObjectByName(objName)
-        obj.scale.set(.25, .25, .25)
-        obj.position.y = 5.25
+        this._Model.scale.set(.25, .25, .25)
+        this._Model.position.y = 5.25
+        this.Mesh.add(this._Model)
 
         this.Mesh.position.set(x, y, z)
     }

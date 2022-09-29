@@ -136,11 +136,12 @@ villagerr03.load(
     }
 )
 
-/*
-const villager04 = new obj.Villager(30)
+const villager04 = new obj.Villager(0, 0, 30)
 villager04.Mesh.rotation.y = Math.PI
 scene.add(villager04.Mesh)
-*/
+
+const sword = new obj.DiamondSword()
+scene.add(sword.Mesh)
 
 function render(){
     renderer.render(scene, camera)
