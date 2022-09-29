@@ -173,6 +173,32 @@ class Portal {
     }
 }
 
+class Model {
+    #mesh = new THREE.Group()
+
+    constructor(gltfPath = "") {
+        const loader = new GLTFLoader()
+        loader.load(
+            `assets/models/${gltfPath}`, (gltfScene) => {
+                gltfScene.scene.name = gltfPath
+                this.#mesh.add(gltfScene.scene)
+            },
+            function ( xhr ) {
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+            },
+            function ( error ) {
+                console.log(error);
+                console.log( 'An error happened' );
+
+            }
+        )
+    }
+
+    get Mesh() {
+        return this.#mesh
+    }
+}
+
 // Antorcha de Minecraft sacada de un modelo que alumbra con un pointLight.
 class Torch {
     #torch = new THREE.Group()
@@ -220,8 +246,46 @@ class Torch {
     }
 }
 
+class Villager extends Model {
+    constructor(x = 0, y = 0, z = 0) {
+        const objName = "minecraft-villager/source/model.gltf"
+        super(objName)
+
+
+        console.log(this.Mesh)
+        const obj = this.Mesh.children[0]
+        obj.scale.set(10, 10, 10)
+        obj.position.y = 5
+
+        // Puede recibir sombras con esto, pero se ve feo.
+        /* gltfScene.scene.traverse(function(node) {
+             if(node.isMesh) {
+                 node.castShadow = true
+                 node.receiveShadow = true
+             }
+         })*/
+
+        this.Mesh.position.set(x, y, z)
+    }
+}
+
+class DiamondSword extends Model{
+    constructor(x = 0, y = 0, z = 0) {
+        const objName = "minecraft_diamond-sword/scene.gltf"
+        super(objName)
+
+        const obj = this.Mesh.getObjectByName(objName)
+        obj.scale.set(.25, .25, .25)
+        obj.position.y = 5.25
+
+        this.Mesh.position.set(x, y, z)
+    }
+}
+
 export {
     Plane,
     Portal,
-    Torch
+    Torch,
+    Villager,
+    DiamondSword
 }
