@@ -322,8 +322,24 @@ class Cat extends Model {
 }
 
 class Steve extends Model {
-    constructor() {
-        super("")
+    constructor(x = 0, y = 0, z = 0) {
+        super("minecraft_steve/scene.gltf")
+
+        this._Model.scale.set(7, 7, 7)
+        this._Model.position.y = 18.5
+        this.Mesh.add(this._Model)
+        this.Mesh.position.set(x, y, z)
+    }
+}
+
+class Enderman extends Model {
+    constructor(x = 0, y = 0, z = 0) {
+        super("minecraft_enderman/scene.gltf")
+
+        this._Model.scale.set(0.6, 0.6, 0.6)
+        this._Model.position.y = 20
+        this.Mesh.add(this._Model)
+        this.Mesh.position.set(x, y, z)
     }
 }
 
@@ -334,5 +350,7 @@ export {
     Villager,
     DiamondSword,
     Cat,
-    CraftingTable
+    CraftingTable,
+    Steve,
+    Enderman
 }

@@ -30,6 +30,23 @@ renderer.setClearColor(0x071924, 1)
 renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement)
 
+//añadir skybox
+let skyboxText = new THREE.TextureLoader().load('assets/textures/stars.png')
+skyboxText.wrapT = THREE.RepeatWrapping
+skyboxText.wrapS = THREE.RepeatWrapping
+skyboxText.repeat.set(4, 4)
+let nightsky = []
+
+for (let i = 0; i < 6; i++){
+    nightsky.push(new THREE.MeshBasicMaterial({map: skyboxText}))
+}
+for (let i = 0; i < 6; i++){
+    nightsky[i].side = THREE.BackSide
+}
+const skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000)
+let skybox = new THREE.Mesh(skyboxGeo, nightsky)
+scene.add(skybox)
+
 const controls = new OrbitControls(camera, renderer.domElement)
 controls.enableDamping = true
 
@@ -37,8 +54,13 @@ const stats = Stats()
 document.body.appendChild(stats.dom)
 
 //A partir de aca cargamos los assets de la escena
-const torch = new obj.Torch(30, 0, 30)
-scene.add(torch.Mesh)
+const torch = [
+    new obj.Torch(30, 0, 30).Mesh,
+    new obj.Torch(-20, 0, -80).Mesh
+]
+torch.forEach(model => {
+    scene.add(model)
+})
 
 // Portal de obsidiana de Minecraft.
 const minecraftPortal = new obj.Portal(70, 5, -95)
@@ -65,6 +87,15 @@ villagers.forEach(model => {
 const cat = new obj.Cat(-50, 0, 20)
 cat.Mesh.rotation.y = 100
 scene.add(cat.Mesh)
+
+const steve = new obj.Steve()
+steve.Mesh.position.z = -80
+steve.Mesh.rotation.y = 90
+scene.add(steve.Mesh)
+
+const enderman = new obj.Enderman()
+enderman.Mesh.position.x = -20
+scene.add(enderman.Mesh)
 
 const table = new obj.CraftingTable(35, 0, -95)
 scene.add(table.Mesh)
