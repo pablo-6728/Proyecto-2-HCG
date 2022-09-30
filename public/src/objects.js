@@ -267,6 +267,17 @@ class Steve extends Model {
     }
 }
 
+class Enderman extends Model { 
+    constructor(x = 0, y = 0, z = 0) {
+        super("minecraft_enderman/scene.gltf")
+
+        this._Model.scale.set(0.6, 0.6, 0.6)
+        this._Model.position.y = 20
+        this.Mesh.add(this._Model)
+        this.Mesh.position.set(x, y, z)
+    }
+}
+
 export {
     Plane,
     Portal,
@@ -274,5 +285,6 @@ export {
     Villager,
     DiamondSword,
     Cat,
-    Steve
+    Steve,
+    Enderman
 }

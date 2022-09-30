@@ -76,6 +76,10 @@ steve.Mesh.position.z = -80
 steve.Mesh.rotation.y = 90
 scene.add(steve.Mesh)
 
+const enderman = new obj.Enderman()
+enderman.Mesh.position.x = -20
+scene.add(enderman.Mesh)
+
 function animate(){
     let time = new Date()
     requestAnimationFrame(animate)
