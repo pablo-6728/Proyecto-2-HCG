@@ -6,8 +6,8 @@ import { DRACOLoader } from "/jsm/loaders/DRACOLoader.js"
 class Plane {
     #mesh
 
-    constructor(x = 0, y = 0, z = 0, planeSize = 10) {
-        const planeGeo = new THREE.BoxGeometry(planeSize, 10, planeSize);
+    constructor(x = 0, y = 0, z = 0, width = 10, depth = 10) {
+        const planeGeo = new THREE.BoxGeometry(width, 10, depth);
         const planeTex = {
             'top': new THREE.TextureLoader().load("assets/textures/grass_block_top.png"),
             'side': new THREE.TextureLoader().load("assets/textures/grass_block_side.png"),
@@ -15,12 +15,12 @@ class Plane {
         }
         planeTex.top.wrapS = planeTex.bottom.wrapS = THREE.RepeatWrapping
         planeTex.top.wrapT = planeTex.bottom.wrapT = THREE.RepeatWrapping
-        planeTex.top.repeat.x = planeTex.bottom.repeat.x = planeSize / 10
-        planeTex.top.repeat.y = planeTex.bottom.repeat.y = planeSize / 10
+        planeTex.top.repeat.x = planeTex.bottom.repeat.x = width / 10
+        planeTex.top.repeat.y = planeTex.bottom.repeat.y = depth / 10
         planeTex.top.magFilter = planeTex.bottom.magFilter = THREE.NearestFilter
 
         planeTex.side.wrapS = THREE.RepeatWrapping
-        planeTex.side.repeat.x = planeSize / 10
+        planeTex.side.repeat.x = width / 10
         planeTex.side.magFilter = THREE.NearestFilter
 
         const planeMat = [
@@ -203,49 +203,20 @@ class Model {
 }
 
 // Antorcha de Minecraft sacada de un modelo que alumbra con un pointLight.
-class Torch {
-    #torch = new THREE.Group()
-
+class Torch extends Model {
     constructor(x = 0, y = 0, z = 0) {
-        const torch = this.#torch
-        const lightTorch = new THREE.PointLight(0xf0ed48, 1, 80)
-        lightTorch.position.set(0, 10.625, 0)
-        lightTorch.castShadow = true
-        this.#torch.add(lightTorch)
+        super("minecraft-torch/scene.gltf")
 
-        // Instantiate a loader
-        const loader = new GLTFLoader();
+        const light = new THREE.PointLight(0xf0ed48, 1, 80)
+        light.position.set(0, 10.625, 0)
+        light.castShadow = true
+        this.Mesh.add(light)
 
-        // Load a glTF resource
-        loader.load(
-            // resource URL
-            'assets/models/minecraft-torch/scene.gltf',
-            // called when the resource is loaded
-            function ( gltf ) {
-                gltf.scene.position.set(0, 8.125, 0)
-                gltf.scene.scale.set(5, 5, 5)
+        this._Model.position.set(0, 8.125, 0)
+        this._Model.scale.set(5, 5, 5)
+        this.Mesh.add(this._Model)
 
-                torch.add(gltf.scene)
-
-            },
-            function ( xhr ) {
-
-                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-            },
-            // called when loading has errors
-            function ( error ) {
-
-                console.log( 'An error happened' );
-
-            }
-        );
-
-        this.#torch.position.set(x, y, z)
-    }
-
-    get Mesh() {
-        return this.#torch
+        this.Mesh.position.set(x, y, z)
     }
 }
 
@@ -256,14 +227,6 @@ class Villager extends Model {
         this._Model.scale.set(10, 10, 10)
         this._Model.position.y = 5
         this.Mesh.add(this._Model)
-
-        // Puede recibir sombras con esto, pero se ve feo.
-        /* gltfScene.scene.traverse(function(node) {
-             if(node.isMesh) {
-                 node.castShadow = true
-                 node.receiveShadow = true
-             }
-         })*/
 
         this.Mesh.position.set(x, y, z)
     }
@@ -281,10 +244,29 @@ class DiamondSword extends Model{
     }
 }
 
+class Cat extends Model {
+    constructor(x = 0, y = 0, z = 0) {
+        super("minecraft-cat/source/minecraft-cat.gltf")
+
+        this._Model.scale.set(10, 10, 10)
+        this._Model.position.y = 5
+        this.Mesh.add(this._Model)
+
+        this.Mesh.position.set(x, y, z)
+    }
+}
+
+class Steve extends Model {
+    constructor() {
+        super("")
+    }
+}
+
 export {
     Plane,
     Portal,
     Torch,
     Villager,
-    DiamondSword
+    DiamondSword,
+    Cat
 }

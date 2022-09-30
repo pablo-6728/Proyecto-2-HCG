@@ -2,12 +2,12 @@ import * as THREE from 'three'
 import {OrbitControls} from './jsm/controls/OrbitControls.js'
 import Stats from './jsm/libs/stats.module.js'
 import * as obj from "./src/objects.js";
-import {GLTFLoader} from "./jsm/loaders/GLTFLoader.js";
 
 //añadir plano
 const scene = new THREE.Scene()
 //scene.add(new THREE.AxesHelper(5))
-const plane = new obj.Plane(0, 0, 0, 200)
+const planeSize = 200
+const plane = new obj.Plane(0, 0, 0, planeSize, planeSize)
 scene.add(plane.Mesh);
 
 const ambientLight = new THREE.AmbientLight()
@@ -47,6 +47,25 @@ scene.add(minecraftPortal.Mesh)
 
 let update = 0
 
+//añadir assets
+const villagers = [
+    new obj.Villager(50).Mesh,
+    new obj.Villager(50, 0, 20).Mesh,
+    new obj.Villager(70).Mesh
+]
+
+villagers[0].rotation.y = 180
+villagers[1].rotation.y = 100
+villagers[2].rotation.y = -180
+
+villagers.forEach(model => {
+    scene.add(model)
+})
+
+const cat = new obj.Cat(-50, 0, 20)
+cat.Mesh.rotation.y = 100
+scene.add(cat.Mesh)
+
 function animate(){
     let time = new Date()
     requestAnimationFrame(animate)
@@ -61,80 +80,6 @@ function animate(){
     render()
     stats.update()
 }
-
-//añadir assets
-// TODO: Convertir a los assets en instancias de sus clases en objects.js
-const villagerr01 = new GLTFLoader()
-villagerr01.load(
-    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = 180
-        gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(50, 5, 0)
-        scene.add(gltfScene.scene)
-    },
-    function ( xhr ) {
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-        console.log(error);
-        console.log( 'An error happened' );
-
-    }
-)
-
-const villagerr02 = new GLTFLoader()
-villagerr02.load(
-    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = 100
-        gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(50, 5, 20)
-        scene.add(gltfScene.scene)
-    },
-    function ( xhr ) {
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-        console.log(error);
-        console.log( 'An error happened' );
-
-    }
-)
-
-const villagerr03 = new GLTFLoader()
-villagerr03.load(
-    'assets/models/minecraft-villager/source/model.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = -180
-        gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(70, 0, 0)
-        scene.add(gltfScene.scene)
-    },
-    function ( xhr ) {
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-        console.log(error);
-        console.log( 'An error happened' );
-
-    }
-)
-
-const cat01 = new GLTFLoader()
-cat01.load(
-    'assets/models/minecraft-cat/source/minecraft-cat.gltf', (gltfScene) => {
-        gltfScene.scene.rotation.y = 100
-        gltfScene.scene.scale.set(10, 10, 10)
-        gltfScene.scene.position.set(-50, 0, 20)
-        scene.add(gltfScene.scene)
-    },
-    function ( xhr ) {
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-        console.log(error);
-        console.log( 'An error happened' );
-
-    }
-)
 
 function render(){
     renderer.render(scene, camera)
