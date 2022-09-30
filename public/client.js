@@ -30,6 +30,23 @@ renderer.setClearColor(0x071924, 1)
 renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement)
 
+//añadir skybox
+let skyboxText = new THREE.TextureLoader().load('assets/textures/stars.png')
+skyboxText.wrapT = THREE.RepeatWrapping
+skyboxText.wrapS = THREE.RepeatWrapping
+skyboxText.repeat.set(4, 4)
+let nightsky = []
+
+for (let i = 0; i < 6; i++){
+    nightsky.push(new THREE.MeshBasicMaterial({map: skyboxText}))
+}
+for (let i = 0; i < 6; i++){
+    nightsky[i].side = THREE.BackSide
+}
+const skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000)
+let skybox = new THREE.Mesh(skyboxGeo, nightsky)
+scene.add(skybox)
+
 const controls = new OrbitControls(camera, renderer.domElement)
 controls.enableDamping = true
 
