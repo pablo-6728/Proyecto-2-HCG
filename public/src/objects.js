@@ -257,8 +257,13 @@ class Cat extends Model {
 }
 
 class Steve extends Model {
-    constructor() {
-        super("")
+    constructor(x = 0, y = 0, z = 0) {
+        super("minecraft_steve/scene.gltf")
+
+        this._Model.scale.set(7, 7, 7)
+        this._Model.position.y = 18.5
+        this.Mesh.add(this._Model)
+        this.Mesh.position.set(x, y, z)
     }
 }
 
@@ -268,5 +273,6 @@ export {
     Torch,
     Villager,
     DiamondSword,
-    Cat
+    Cat,
+    Steve
 }

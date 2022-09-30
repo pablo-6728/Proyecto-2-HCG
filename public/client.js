@@ -37,8 +37,13 @@ const stats = Stats()
 document.body.appendChild(stats.dom)
 
 //A partir de aca cargamos los assets de la escena
-const torch = new obj.Torch(30, 0, 30)
-scene.add(torch.Mesh)
+const torch = [
+    new obj.Torch(30, 0, 30).Mesh,
+    new obj.Torch(-20, 0, -80).Mesh
+]
+torch.forEach(model => {
+    scene.add(model)
+})
 
 // Portal de obsidiana de Minecraft.
 const minecraftPortal = new obj.Portal(70, 5, -95)
@@ -65,6 +70,11 @@ villagers.forEach(model => {
 const cat = new obj.Cat(-50, 0, 20)
 cat.Mesh.rotation.y = 100
 scene.add(cat.Mesh)
+
+const steve = new obj.Steve()
+steve.Mesh.position.z = -80
+steve.Mesh.rotation.y = 90
+scene.add(steve.Mesh)
 
 function animate(){
     let time = new Date()
