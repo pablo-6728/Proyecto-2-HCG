@@ -2,6 +2,11 @@ import * as THREE from 'three'
 import { GLTFLoader } from "/jsm/loaders/GLTFLoader.js"
 import { DRACOLoader } from "/jsm/loaders/DRACOLoader.js"
 
+/* * * * * * * * * * * * * * * * * * * * * * * * *
+ * Clases que usan elementos propios de Three.js *
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+
 // Plano con textura de pasto de Minecraft.
 class Plane {
     #mesh
@@ -173,6 +178,66 @@ class Portal {
     }
 }
 
+class CraftingTable {
+    #mesh = new THREE.Group()
+
+    constructor(x = 0, y = 0, z = 0) {
+        const texture = {
+            'top': new THREE.TextureLoader().load("assets/textures/crafting_table_top.png"),
+            'side': new THREE.TextureLoader().load("assets/textures/crafting_table_side.png"),
+            'front': new THREE.TextureLoader().load("assets/textures/crafting_table_front.png"),
+            'bottom': new THREE.TextureLoader().load("assets/textures/oak_planks.png")
+        }
+
+        for(let face in texture) {
+            texture[face].magFilter = THREE.NearestFilter
+        }
+
+        const geometry = new THREE.BoxGeometry(10, 10, 10)
+        const material = [
+            new THREE.MeshPhongMaterial({
+                map: texture.side,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                map: texture.side,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                map: texture.top,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                map: texture.bottom,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                map: texture.front,
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshPhongMaterial({
+                map: texture.side,
+                side: THREE.DoubleSide
+            }),
+        ]
+
+        const mesh = new THREE.Mesh(geometry, material)
+        mesh.position.y = 10
+        this.#mesh.add(mesh)
+        this.#mesh.position.set(x, y, z)
+        this.#mesh.receiveShadow = true
+    }
+
+    get Mesh() {
+        return this.#mesh
+    }
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * *
+ * Clases que usan elementos modelos precargados *
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+
 class Model {
     #mesh = new THREE.Group()
     #model = new THREE.Group()
@@ -207,7 +272,7 @@ class Torch extends Model {
     constructor(x = 0, y = 0, z = 0) {
         super("minecraft-torch/scene.gltf")
 
-        const light = new THREE.PointLight(0xf0ed48, 1, 80)
+        const light = new THREE.PointLight(0xf0ed48, 1, 80, 0.75)
         light.position.set(0, 10.625, 0)
         light.castShadow = true
         this.Mesh.add(light)
@@ -268,5 +333,6 @@ export {
     Torch,
     Villager,
     DiamondSword,
-    Cat
+    Cat,
+    CraftingTable
 }

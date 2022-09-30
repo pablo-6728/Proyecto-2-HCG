@@ -66,6 +66,28 @@ const cat = new obj.Cat(-50, 0, 20)
 cat.Mesh.rotation.y = 100
 scene.add(cat.Mesh)
 
+const table = new obj.CraftingTable(35, 0, -95)
+scene.add(table.Mesh)
+
+const sword = new obj.DiamondSword(35 ,10, -95)
+scene.add(sword.Mesh)
+
+
+// Añadiendo efecto partículas
+//const particleGeo = new THREE.PlaneGeometry(4, 4)
+const particleTex = new THREE.TextureLoader().load(`assets/textures/generic_${Math.floor(Math.random()*8)}.png`)
+particleTex.magFilter = THREE.NearestFilter
+const particleMat = new THREE.SpriteMaterial({
+    map: particleTex,
+    transparent: true,
+    opacity: 0.4,
+    color: 0xbb29d9,
+    side: THREE.DoubleSide
+})
+const particle = new THREE.Sprite(particleMat)
+particle.position.y = 20
+scene.add(particle)
+
 function animate(){
     let time = new Date()
     requestAnimationFrame(animate)
