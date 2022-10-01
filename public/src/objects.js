@@ -258,12 +258,12 @@ class Particle {
         })
         this.#mesh = new THREE.Sprite(particleMat)
 
-        this.#Reset()
-        this.#t0 = Math.floor(Math.random()*this.#tf)
         this.#positionX = x
         this.#positionY = y
         this.#positionZ = z
-        this.#mesh.position.set(Math.random()*20 - 10 + x, y, z)
+
+        this.#Reset()
+        this.#t0 = Math.floor(Math.random()*this.#tf)
     }
 
     get Mesh() {
