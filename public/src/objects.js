@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { GLTFLoader } from "/jsm/loaders/GLTFLoader.js"
-import { DRACOLoader } from "/jsm/loaders/DRACOLoader.js"
 
 /* * * * * * * * * * * * * * * * * * * * * * * * *
  * Clases que usan elementos propios de Three.js *
@@ -69,7 +68,8 @@ class Plane {
 class Portal {
     #portalTex
     #portal
-    #MCPortal
+    #MCPortal = new THREE.Group()
+    #clock = 0
 
     constructor(x = 0, y = 0, z = 0) {
         // Pilares verticales.
@@ -170,11 +170,17 @@ class Portal {
         this.#MCPortal.position.set(x, y, z)
     }
 
-    get portalTex() {
-        return this.#portalTex
-    }
     get Mesh() {
         return this.#MCPortal
+    }
+
+    Update() {
+        this.#portalTex.offset.y = Math.floor(this.#clock) / 32
+
+        this.#clock += 0.5
+        if (this.#clock >= 32) {
+            this.#clock = 0
+        }
     }
 }
 
@@ -193,33 +199,24 @@ class CraftingTable {
             texture[face].magFilter = THREE.NearestFilter
         }
 
-        const geometry = new THREE.BoxGeometry(10, 10, 10)
-        const material = [
-            new THREE.MeshPhongMaterial({
-                map: texture.side,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                map: texture.side,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                map: texture.top,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                map: texture.bottom,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                map: texture.front,
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshPhongMaterial({
-                map: texture.side,
-                side: THREE.DoubleSide
-            }),
+        const materialOrder = [
+            texture.side,
+            texture.side,
+            texture.top,
+            texture.bottom,
+            texture.front,
+            texture.side
         ]
+
+        const geometry = new THREE.BoxGeometry(10, 10, 10)
+        let material = []
+
+        for(let face of materialOrder) {
+            material.push(new THREE.MeshPhongMaterial({
+                map: face,
+                side: THREE.DoubleSide
+            }))
+        }
 
         const mesh = new THREE.Mesh(geometry, material)
         mesh.position.y = 10
@@ -230,6 +227,70 @@ class CraftingTable {
 
     get Mesh() {
         return this.#mesh
+    }
+}
+
+class Particle {
+    #mesh = new THREE.Sprite()
+    #xf = 0
+    #x0 = 0
+    #tf = 120
+    #t0 = 0
+    #v0x = 0
+    #ax = 0
+    #y0 = 0
+    #yf = 0
+    #v0y = -20
+    #ay = 20
+
+    constructor(x = 0, y = 0, z = 0) {
+        const particleTex = new THREE.TextureLoader().load(
+            `assets/textures/generic_${Math.floor(Math.random()*8)}.png`
+        )
+        particleTex.magFilter = THREE.NearestFilter
+        const particleMat = new THREE.SpriteMaterial({
+            map: particleTex,
+            /*transparent: true,
+            opacity: 0.4,*/
+            color: 0xbb29d9,
+            side: THREE.DoubleSide
+        })
+        this.#mesh = new THREE.Sprite(particleMat)
+
+        this.#Reset()
+        this.#t0 = Math.floor(Math.random()*this.#tf)
+    }
+
+    get Mesh() {
+        return this.#mesh
+    }
+
+    #Reset() {
+        this.#mesh.position.x = Math.random()*20 - 10
+        this.#mesh.position.y = Math.random()*30 + 25
+        this.#mesh.position.z = Math.random()*40 - 20
+
+        this.#x0 = this.#mesh.position.z
+        this.#v0x = -2 * this.#mesh.position.z
+        this.#ax = -this.#v0x
+
+        this.#y0 = this.#mesh.position.y
+        this.#t0 = 0
+    }
+
+    Update() {
+        let s = this.#t0 / this.#tf
+
+        this.#xf = this.#x0 + this.#v0x * s + .5 * this.#ax * s**2
+        this.#mesh.position.z = this.#xf
+
+        this.#yf = this.#y0 + this.#v0y * s + .5 * this.#ay * s**2
+        this.#mesh.position.y = this.#yf
+        this.#t0 += 1
+
+        if(this.#t0 >= this.#tf) {
+            this.#Reset()
+        }
     }
 }
 
@@ -280,7 +341,6 @@ class Torch extends Model {
         this._Model.position.set(0, 8.125, 0)
         this._Model.scale.set(5, 5, 5)
         this.Mesh.add(this._Model)
-
         this.Mesh.position.set(x, y, z)
     }
 }
@@ -292,7 +352,6 @@ class Villager extends Model {
         this._Model.scale.set(10, 10, 10)
         this._Model.position.y = 5
         this.Mesh.add(this._Model)
-
         this.Mesh.position.set(x, y, z)
     }
 }
@@ -304,7 +363,6 @@ class DiamondSword extends Model{
         this._Model.scale.set(.25, .25, .25)
         this._Model.position.y = 5.25
         this.Mesh.add(this._Model)
-
         this.Mesh.position.set(x, y, z)
     }
 }
@@ -316,7 +374,6 @@ class Cat extends Model {
         this._Model.scale.set(10, 10, 10)
         this._Model.position.y = 5
         this.Mesh.add(this._Model)
-
         this.Mesh.position.set(x, y, z)
     }
 }
@@ -352,5 +409,6 @@ export {
     Cat,
     CraftingTable,
     Steve,
-    Enderman
+    Enderman,
+    Particle
 }

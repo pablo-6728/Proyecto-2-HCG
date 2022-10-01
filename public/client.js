@@ -38,10 +38,10 @@ skyboxText.repeat.set(4, 4)
 let nightsky = []
 
 for (let i = 0; i < 6; i++){
-    nightsky.push(new THREE.MeshBasicMaterial({map: skyboxText}))
-}
-for (let i = 0; i < 6; i++){
-    nightsky[i].side = THREE.BackSide
+    nightsky.push(new THREE.MeshBasicMaterial({
+        map: skyboxText,
+        side: THREE.BackSide
+    }))
 }
 const skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000)
 let skybox = new THREE.Mesh(skyboxGeo, nightsky)
@@ -64,7 +64,6 @@ torch.forEach(model => {
 
 // Portal de obsidiana de Minecraft.
 const minecraftPortal = new obj.Portal(70, 5, -95)
-const portalTex = minecraftPortal.portalTex
 scene.add(minecraftPortal.Mesh)
 
 let update = 0
@@ -89,7 +88,8 @@ cat.Mesh.rotation.y = 100
 scene.add(cat.Mesh)
 
 const steve = new obj.Steve()
-steve.Mesh.position.z = -80
+steve.Mesh.position.z = -82
+steve.Mesh.position.x = 25
 steve.Mesh.rotation.y = 90
 scene.add(steve.Mesh)
 
@@ -103,30 +103,25 @@ scene.add(table.Mesh)
 const sword = new obj.DiamondSword(35 ,10, -95)
 scene.add(sword.Mesh)
 
+scene.add(new obj.CraftingTable(0, 0, 20).Mesh)
 
 // Añadiendo efecto partículas
-//const particleGeo = new THREE.PlaneGeometry(4, 4)
-const particleTex = new THREE.TextureLoader().load(`assets/textures/generic_${Math.floor(Math.random()*8)}.png`)
-particleTex.magFilter = THREE.NearestFilter
-const particleMat = new THREE.SpriteMaterial({
-    map: particleTex,
-    transparent: true,
-    opacity: 0.4,
-    color: 0xbb29d9,
-    side: THREE.DoubleSide
-})
-const particle = new THREE.Sprite(particleMat)
-particle.position.y = 20
-scene.add(particle)
+const test = new obj.Portal(0, 5, 0)
+scene.add(test.Mesh)
+let particles = []
+for(let i = 0; i < 240; i++) {
+    particles.push(new obj.Particle())
+    scene.add(particles[i].Mesh)
+}
 
 function animate(){
     let time = new Date()
     requestAnimationFrame(animate)
-    portalTex.offset.y = Math.floor(update) / 32
+    minecraftPortal.Update()
+    test.Update()
 
-    update += 0.3
-    if (update >= 32) {
-        update = 0
+    for(let particle of particles) {
+        particle.Update()
     }
 
     controls.update()
