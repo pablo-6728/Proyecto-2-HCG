@@ -103,14 +103,10 @@ scene.add(table.Mesh)
 const sword = new obj.DiamondSword(35 ,10, -95)
 scene.add(sword.Mesh)
 
-scene.add(new obj.CraftingTable(0, 0, 20).Mesh)
-
 // Añadiendo efecto partículas
-const test = new obj.Portal(0, 5, 0)
-scene.add(test.Mesh)
 let particles = []
 for(let i = 0; i < 240; i++) {
-    particles.push(new obj.Particle())
+    particles.push(new obj.Particle(70, 0, -95))
     scene.add(particles[i].Mesh)
 }
 
@@ -118,7 +114,6 @@ function animate(){
     let time = new Date()
     requestAnimationFrame(animate)
     minecraftPortal.Update()
-    test.Update()
 
     for(let particle of particles) {
         particle.Update()

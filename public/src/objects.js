@@ -232,16 +232,19 @@ class CraftingTable {
 
 class Particle {
     #mesh = new THREE.Sprite()
-    #xf = 0
-    #x0 = 0
+    #zf = 0
+    #z0 = 0
     #tf = 120
     #t0 = 0
-    #v0x = 0
-    #ax = 0
+    #v0z = 0
+    #az = 0
     #y0 = 0
     #yf = 0
     #v0y = -20
     #ay = 20
+    #positionX = 0
+    #positionY = 0
+    #positionZ = 0
 
     constructor(x = 0, y = 0, z = 0) {
         const particleTex = new THREE.TextureLoader().load(
@@ -250,8 +253,6 @@ class Particle {
         particleTex.magFilter = THREE.NearestFilter
         const particleMat = new THREE.SpriteMaterial({
             map: particleTex,
-            /*transparent: true,
-            opacity: 0.4,*/
             color: 0xbb29d9,
             side: THREE.DoubleSide
         })
@@ -259,6 +260,9 @@ class Particle {
 
         this.#Reset()
         this.#t0 = Math.floor(Math.random()*this.#tf)
+        this.#positionX = x
+        this.#positionY = y
+        this.#positionZ = z
     }
 
     get Mesh() {
@@ -266,13 +270,14 @@ class Particle {
     }
 
     #Reset() {
-        this.#mesh.position.x = Math.random()*20 - 10
+        this.#mesh.position.x = Math.random()*20 - 10 + this.#positionX
         this.#mesh.position.y = Math.random()*30 + 25
-        this.#mesh.position.z = Math.random()*40 - 20
+        this.#mesh.position.z = Math.random()*50 - 25
 
-        this.#x0 = this.#mesh.position.z
-        this.#v0x = -2 * this.#mesh.position.z
-        this.#ax = -this.#v0x
+        this.#z0 = this.#mesh.position.z
+        this.#v0z = -2 * this.#z0
+        this.#az = -this.#v0z
+        this.#mesh.position.z = this.#z0 + this.#positionZ
 
         this.#y0 = this.#mesh.position.y
         this.#t0 = 0
@@ -281,16 +286,17 @@ class Particle {
     Update() {
         let s = this.#t0 / this.#tf
 
-        this.#xf = this.#x0 + this.#v0x * s + .5 * this.#ax * s**2
-        this.#mesh.position.z = this.#xf
+        this.#zf = this.#z0 + this.#v0z * s + .5 * this.#az * s**2
+        this.#mesh.position.z = this.#zf + this.#positionZ
 
         this.#yf = this.#y0 + this.#v0y * s + .5 * this.#ay * s**2
-        this.#mesh.position.y = this.#yf
+        this.#mesh.position.y = this.#yf + this.#positionY
         this.#t0 += 1
 
         if(this.#t0 >= this.#tf) {
             this.#Reset()
         }
+        console.log(this.#zf)
     }
 }
 
