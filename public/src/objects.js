@@ -263,6 +263,7 @@ class Particle {
         this.#positionX = x
         this.#positionY = y
         this.#positionZ = z
+        this.#mesh.position.set(Math.random()*20 - 10 + x, y, z)
     }
 
     get Mesh() {
