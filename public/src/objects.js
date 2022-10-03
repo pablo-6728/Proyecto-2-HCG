@@ -232,16 +232,16 @@ class CraftingTable {
 
 class Particle {
     #mesh = new THREE.Sprite()
-    #zf = 0
-    #z0 = 0
-    #tf = 120
-    #t0 = 0
-    #v0z = 0
-    #az = 0
-    #y0 = 0
-    #yf = 0
-    #v0y = -20
-    #ay = 20
+    #zf = 0    // Posición final en z
+    #z0 = 0    // Posición inicial en z
+    #tf = 120  // Tiempo final
+    #t0 = 0    // Tiempo inicial
+    #v0z = 0   // Velocidad inicial en z
+    #az = 0    // Aceleración en el eje z
+    #y0 = 0    // Posición inicial en y
+    #yf = 0    // Posición final en y
+    #v0y = -20 // Velocidad inicial en y
+    #ay = 20   // Aceleración en el eje y
     #positionX = 0
     #positionY = 0
     #positionZ = 0
@@ -276,8 +276,8 @@ class Particle {
         this.#mesh.position.z = Math.random()*50 - 25
 
         this.#z0 = this.#mesh.position.z
-        this.#v0z = -2 * this.#z0
-        this.#az = -this.#v0z
+        this.#v0z = 0
+        this.#az = -2 * this.#z0
         this.#mesh.position.z = this.#z0 + this.#positionZ
 
         this.#y0 = this.#mesh.position.y
@@ -297,7 +297,6 @@ class Particle {
         if(this.#t0 >= this.#tf) {
             this.#Reset()
         }
-        console.log(this.#zf)
     }
 }
 

@@ -105,7 +105,7 @@ scene.add(sword.Mesh)
 
 // Añadiendo efecto partículas
 let particles = []
-for(let i = 0; i < 240; i++) {
+for(let i = 0; i < 120; i++) {
     particles.push(new obj.Particle(70, 0, -95))
     scene.add(particles[i].Mesh)
 }
