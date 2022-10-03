@@ -1,11 +1,13 @@
 import * as THREE from 'three'
-import {OrbitControls} from './jsm/controls/OrbitControls.js'
+import { EffectComposer } from './jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from './jsm/postprocessing/RenderPass.js'
+import { BloomPass } from './jsm/postprocessing/BloomPass.js'
+import { OrbitControls } from './jsm/controls/OrbitControls.js'
 import Stats from './jsm/libs/stats.module.js'
 import * as obj from "./src/objects.js";
 
 //añadir plano
 const scene = new THREE.Scene()
-//scene.add(new THREE.AxesHelper(5))
 const planeSize = 200
 const plane = new obj.Plane(0, 0, 0, planeSize, planeSize)
 scene.add(plane.Mesh);
@@ -24,6 +26,7 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 50
 camera.position.y = 50
 
+
 const renderer =  new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setClearColor(0x071924, 1)
@@ -31,21 +34,13 @@ renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement)
 
 //añadir skybox
-let skyboxText = new THREE.TextureLoader().load('assets/textures/stars.png')
-skyboxText.wrapT = THREE.RepeatWrapping
-skyboxText.wrapS = THREE.RepeatWrapping
-skyboxText.repeat.set(4, 4)
-let nightsky = []
-
-for (let i = 0; i < 6; i++){
-    nightsky.push(new THREE.MeshBasicMaterial({
-        map: skyboxText,
-        side: THREE.BackSide
-    }))
-}
-const skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000)
-let skybox = new THREE.Mesh(skyboxGeo, nightsky)
-scene.add(skybox)
+const scene_bg = new THREE.TextureLoader()
+scene_bg.load('assets/textures/stars.png', (texture) => {
+    texture.wrapS = THREE.RepeatWrapping
+    texture.wrapT = THREE.RepeatWrapping
+    texture.repeat.set(4, 4)
+    scene.background = texture
+})
 
 const controls = new OrbitControls(camera, renderer.domElement)
 controls.enableDamping = true
@@ -110,22 +105,32 @@ for(let i = 0; i < 240; i++) {
     scene.add(particles[i].Mesh)
 }
 
+//Postprocesamiento
+const composer = new EffectComposer(renderer)
+
+const renderPass = new RenderPass(scene, camera)
+composer.addPass( renderPass )
+
+const bloomPass = new BloomPass()
+composer.addPass( bloomPass )
+
+
 function animate(){
-    let time = new Date()
     requestAnimationFrame(animate)
+    render()
     minecraftPortal.Update()
 
     for(let particle of particles) {
         particle.Update()
     }
-
     controls.update()
-    render()
     stats.update()
 }
 
+
 function render(){
     renderer.render(scene, camera)
+    composer.render()
 }
 
 animate()

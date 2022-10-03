@@ -297,7 +297,7 @@ class Particle {
         if(this.#t0 >= this.#tf) {
             this.#Reset()
         }
-        console.log(this.#zf)
+        //console.log(this.#zf)
     }
 }
 
