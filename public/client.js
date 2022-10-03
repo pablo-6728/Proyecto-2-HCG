@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { EffectComposer } from './jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from './jsm/postprocessing/RenderPass.js'
-import { BloomPass } from './jsm/postprocessing/BloomPass.js'
+import { FilmPass } from './jsm/postprocessing/FilmPass.js'
 import { OrbitControls } from './jsm/controls/OrbitControls.js'
 import Stats from './jsm/libs/stats.module.js'
 import * as obj from "./src/objects.js";
@@ -26,6 +26,17 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 50
 camera.position.y = 50
 
+//agregar musica a la escena
+const listener = new THREE.AudioListener()
+camera.add(listener)
+const sound = new THREE.Audio(listener)
+const audioLoader = new THREE.AudioLoader()
+audioLoader.load('/assets/sounds/MinecraftMusic.mp3', (buffer) => {
+    sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 0.5 );
+	sound.play()
+})
 
 const renderer =  new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
@@ -111,8 +122,9 @@ const composer = new EffectComposer(renderer)
 const renderPass = new RenderPass(scene, camera)
 composer.addPass( renderPass )
 
-const bloomPass = new BloomPass()
-composer.addPass( bloomPass )
+const filmPass = new FilmPass(0.8, 0.325, 256, false)
+filmPass.renderToScreen = true
+composer.addPass( filmPass )
 
 
 function animate(){
@@ -129,7 +141,7 @@ function animate(){
 
 
 function render(){
-    renderer.render(scene, camera)
+   // renderer.render(scene, camera)
     composer.render()
 }
 
